@@ -8,8 +8,10 @@ import {
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import SearchBar from '../../components/SearchBar';
 import blue from '@material-ui/core/colors/blue';
+import IconButton from '@material-ui/core/IconButton';
+
+import SearchBar from '../../components/SearchBar';
 
 const styles = theme => ({
   root: {
@@ -19,8 +21,7 @@ const styles = theme => ({
     margin: theme.spacing.unit
   },
   logoContainer: {
-    display: 'flex',
-    justifyContent: 'flex-start'
+    display: 'flex'
   },
   logo: {
     height: '42px'
@@ -45,17 +46,15 @@ class NavBar extends Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="inherit">
-          <Toolbar>
-            <div className={classes.logoContainer}>
-              <a href="/">
-                <img
-                  alt="logo"
-                  src={this.props.logo}
-                  className={classes.logo}
-                />
-              </a>
-            </div>
+        <AppBar position="fixed" color="inherit">
+          <Toolbar className={classes.toolBarContainer}>
+            <IconButton
+              className={classes.logoContainer}
+              aria-label="logo"
+              disableRipple={true}
+            >
+              <img alt="logo" src={this.props.logo} className={classes.logo} />
+            </IconButton>
             <div className={classes.searchBarContainer}>
               <SearchBar />
             </div>
