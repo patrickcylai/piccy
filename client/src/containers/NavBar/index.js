@@ -26,12 +26,11 @@ const styles = theme => ({
     flex: 1,
     justifyContent: 'center',
     marginLeft: '120px'
-  }
-});
-
-const theme = createMuiTheme({
-  palette: {
-    primary: blue
+  },
+  toolBarContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center'
   }
 });
 
@@ -54,7 +53,7 @@ class NavBar extends Component {
               <SearchBar />
             </div>
             <Button color="inherit" className={classes.button}>
-              Sign In
+              Profile
             </Button>
             <Button color="inherit" className={classes.button}>
               Log Out
