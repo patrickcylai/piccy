@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  withStyles,
-  MuiThemeProvider,
-  createMuiTheme
-} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import blue from '@material-ui/core/colors/blue';
 import IconButton from '@material-ui/core/IconButton';
 
 import SearchBar from '../../components/SearchBar';
@@ -61,15 +56,9 @@ class NavBar extends Component {
             <Button color="inherit" className={classes.button}>
               Sign In
             </Button>
-            <MuiThemeProvider theme={theme}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
-                Sign up
-              </Button>
-            </MuiThemeProvider>
+            <Button color="inherit" className={classes.button}>
+              Log Out
+            </Button>
           </Toolbar>
         </AppBar>
       </div>
