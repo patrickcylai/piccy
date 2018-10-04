@@ -6,7 +6,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 
-import SearchBar from '../../components/SearchBar';
+import SearchBar from './SearchBar';
+
+import logo from '../../images/logo.svg';
 
 const styles = theme => ({
   root: {
@@ -47,7 +49,7 @@ class NavBar extends Component {
               aria-label="logo"
               disableRipple={true}
             >
-              <img alt="logo" src={this.props.logo} className={classes.logo} />
+              <img alt="logo" src={logo} className={classes.logo} />
             </IconButton>
             <div className={classes.searchBarContainer}>
               <SearchBar />
@@ -66,8 +68,7 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  title: PropTypes.string
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(NavBar);
