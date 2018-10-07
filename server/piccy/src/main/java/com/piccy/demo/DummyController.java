@@ -12,10 +12,13 @@ public class DummyController {
 	private static final String template = "Hello %s!";
 	private final AtomicLong counter = new AtomicLong();
 	
-	@RequestMapping
-	public Dummy greeting(@RequestParam(value="name", defaultValue="World") String name) {
-		return new Dummy(counter.incrementAndGet(), String.format(template, name));
-	}
+
+    @RequestMapping("/dummy")
+    public Dummy greeting(@RequestParam(value="name", defaultValue="World") String name) {
+        return new Dummy(counter.incrementAndGet(),
+                            String.format(template, name));
+    }
+    
 	
 	@RequestMapping
 	public void saving(@RequestParam(value="name", defaultValue="World") String something) {
