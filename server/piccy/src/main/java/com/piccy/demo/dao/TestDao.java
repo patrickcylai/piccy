@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import com.piccy.demo.Dummy;
+
 
 public class TestDao {
 	
@@ -21,8 +21,5 @@ public class TestDao {
 		this.sessionFactory = sessionFactory;
 	}
 
-	
-	public void saveGreeting(Dummy person) {
-		
-	}
+
 }

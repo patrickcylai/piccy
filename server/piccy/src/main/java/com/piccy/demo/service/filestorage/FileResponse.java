@@ -1,4 +1,4 @@
-package com.piccy.demo;
+package com.piccy.demo.service.filestorage;
 
 public class FileResponse {
 	

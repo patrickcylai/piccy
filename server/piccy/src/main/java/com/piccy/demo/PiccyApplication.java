@@ -1,10 +1,11 @@
 package com.piccy.demo;
 
-import com.piccy.demo.service.filestorage.*;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import com.piccy.demo.service.*;
+import com.piccy.demo.service.filestorage.FileStorageProperties;
 
 
 @SpringBootApplication

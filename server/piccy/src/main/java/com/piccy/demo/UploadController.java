@@ -26,6 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.piccy.demo.service.filestorage.FileResponse;
+import com.piccy.demo.service.filestorage.FileStorageService;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,20 +47,13 @@ public class UploadController {
 	private final AtomicLong counter = new AtomicLong();
 	
 	
-	
-	private static final String template = "Hello %s!";
-	
-	@RequestMapping("/greeting")
-	public Dummy greeting(@RequestParam(value="name", defaultValue="World") String name) {
-		return new Dummy(counter.incrementAndGet(), String.format(template, name));
-	}
-	
+
+		
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public FileResponse upload(@RequestParam("userid") String userid, @RequestParam("file") MultipartFile file) {
 		String filename = fileStorageService.storeFile(file);
-		//TODO: generate filename
-		System.out.println(ServletUriComponentsBuilder.fromCurrentContextPath().toUriString()); 
+		//TODO: generate filename for storage bucket
 		String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename).toUriString();
 		
 		return new FileResponse(filename, downloadUri, file.getContentType(), file.getSize());
