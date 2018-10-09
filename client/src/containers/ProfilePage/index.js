@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import NavBar from '../../components/NavBar';
+import Profile from '../../components/Profile';
 
 const styles = theme => ({});
 
@@ -13,6 +14,7 @@ class ProfilePage extends Component {
     return (
       <div>
         <NavBar />
+        <Profile />
       </div>
     );
   }

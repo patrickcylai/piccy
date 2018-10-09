@@ -74,7 +74,7 @@ class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
-  displaySearchBar: PropTypes.boolean
+  displaySearchBar: PropTypes.bool
 };
 
 export default withStyles(styles)(SearchBar);

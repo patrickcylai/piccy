@@ -69,7 +69,7 @@ class NavBar extends Component {
 
 NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  displaySearchBar: PropTypes.boolean
+  displaySearchBar: PropTypes.bool
 };
 
 export default withStyles(styles)(NavBar);
