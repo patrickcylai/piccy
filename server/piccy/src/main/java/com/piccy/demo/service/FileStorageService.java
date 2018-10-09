@@ -1,4 +1,5 @@
-package com.piccy.demo.service.filestorage;
+package com.piccy.demo.service;
+
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,6 +20,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+
+
 
 @Service
 @ComponentScan("com.piccy.demo")

@@ -29,25 +29,52 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
-        
-        		<!-- Spring and Transactions -->
+
+<!-- 	     <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-security</artifactId>
+	      </dependency> -->
+	      <dependency>
+            <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-data-jpa</artifactId>
+		      <exclusions>
+                    <exclusion>
+                   <groupId>org.apache.tomcat</groupId>
+                     <artifactId>tomcat-jdbc</artifactId>
+                   </exclusion>
+               </exclusions>
+		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
+                       <groupId>mysql</groupId>
+                       <artifactId>mysql-connector-java</artifactId>
+                </dependency>
+		 <dependency>
+                         <groupId>commons-dbcp</groupId>
+                         <artifactId>commons-dbcp</artifactId>
+                         <version>1.4</version>
+		</dependency>
+  
+         
+<!--         Spring and Transactions
+		<dependency>
+			<groupId>org.springframework</groupId>4
 			<artifactId>spring-context</artifactId>
+	
 			</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
+		
 		</dependency>
 
-		<!-- Spring ORM support -->
+		Spring ORM support
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
+			<version>3.1.0.RELEASE</version>
 		</dependency>
 
-		<!-- Logging with SLF4J & LogBack -->
+		Logging with SLF4J & LogBack
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -59,28 +86,50 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-		</dependency>
+		Hibernate
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-
+			<version>3.5.6-Final</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager	</artifactId>
+			<version>3.5.6-Final</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations </artifactId>
+			<version>3.5.6-Final</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.9</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-        
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.1.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency> -->
+
 	    </dependencies>
 
     <properties>

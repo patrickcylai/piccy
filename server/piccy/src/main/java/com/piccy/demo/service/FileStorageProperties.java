@@ -1,4 +1,4 @@
-package com.piccy.demo.service.filestorage;
+package com.piccy.demo.service;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -1,5 +1,6 @@
 package com.piccy.demo;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,8 +27,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.piccy.demo.service.filestorage.FileResponse;
-import com.piccy.demo.service.filestorage.FileStorageService;
+import com.piccy.demo.service.FileResponse;
+import com.piccy.demo.service.FileStorageService;
+
+import com.piccy.demo.service.PostService;
+import com.piccy.demo.domain.Post;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -36,52 +40,43 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
+
 @RestController
-@ComponentScan("com.piccy.demo.service.filestorage")
-public class UploadController {
+@ComponentScan("com.piccy.demo.service")
+public class PostController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
+	
+	@Autowired
+	private PostService postService;
 	
 	@Autowired
 	private FileStorageService fileStorageService;
 	private final AtomicLong counter = new AtomicLong();
-	
-	
 
 		
 	
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public FileResponse upload(@RequestParam("userid") String userid, @RequestParam("file") MultipartFile file) {
+	@RequestMapping(value = "/post", method = RequestMethod.POST)
+	public FileResponse createPost(@RequestParam("userid") int userid, @RequestParam("file") MultipartFile file) {
 		String filename = fileStorageService.storeFile(file);
 		//TODO: generate filename for storage bucket
 		String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename).toUriString();
 		
+	
+		Post post = new Post();
+		post.setImageRef(filename);
+		post.setUserId(userid);
+		post.setCreationDate(new Date());
+		
+		postService.createPost(post);
 		return new FileResponse(filename, downloadUri, file.getContentType(), file.getSize());
+		
+		
 	}
 	
 	
-	@RequestMapping(value = "/images/{filename:.+}", method = RequestMethod.GET)
-	public ResponseEntity<Resource> download(@PathVariable String filename, HttpServletRequest request) {
-		
-		Resource resource = fileStorageService.loadFile(filename);
-		String contentType = null;
-		
-		try {
-			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-		}
-		catch (IOException ex) {
-			logger.info("Could not determine file type.");
-		}
-		
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
-        
-        return ResponseEntity.ok()
-        		.contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
-	}
 	
 	
 
