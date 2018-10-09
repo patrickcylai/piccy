@@ -38,7 +38,7 @@ const styles = theme => ({
 
 class NavBar extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes, displaySearchBar } = this.props;
 
     return (
       <div className={classes.root}>
@@ -52,7 +52,7 @@ class NavBar extends Component {
               <img alt="logo" src={logo} className={classes.logo} />
             </IconButton>
             <div className={classes.searchBarContainer}>
-              <SearchBar />
+              <SearchBar displaySearchBar={displaySearchBar} />
             </div>
             <Button color="inherit" className={classes.button}>
               Profile
@@ -68,7 +68,8 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  displaySearchBar: PropTypes.boolean
 };
 
 export default withStyles(styles)(NavBar);
