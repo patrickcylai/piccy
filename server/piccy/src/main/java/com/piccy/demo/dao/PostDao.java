@@ -54,8 +54,7 @@ public class PostDao {
 			System.out.println(ex.getStackTrace().toString());
 		}
 		finally {
-			//session.flush();  
-			//session.close(); 
+			
 		}
 
 		//sessionFactory.getCurrentSession().save(post);

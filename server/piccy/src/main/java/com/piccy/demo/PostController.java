@@ -59,7 +59,7 @@ public class PostController {
 		
 	
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
-	public FileResponse createPost(@RequestParam("userid") int userid, @RequestParam("file") MultipartFile file) {
+	public Post createPost(@RequestParam("userid") int userid, @RequestParam("file") MultipartFile file) {
 		String filename = fileStorageService.storeFile(file);
 		//TODO: generate filename for storage bucket
 		String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename).toUriString();
@@ -71,7 +71,9 @@ public class PostController {
 		post.setCreationDate(new Date());
 		
 		postService.createPost(post);
-		return new FileResponse(filename, downloadUri, file.getContentType(), file.getSize());
+
+		
+		return post;
 		
 		
 	}
