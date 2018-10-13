@@ -58,23 +58,41 @@ public class PostController {
 
 		
 	
-	@RequestMapping(value = "/post", method = RequestMethod.POST)
+	@RequestMapping(value = "/create-post", method = RequestMethod.POST)
 	public Post createPost(@RequestParam("userid") int userid, @RequestParam("file") MultipartFile file) {
+		
 		String filename = fileStorageService.storeFile(file);
 		//TODO: generate filename for storage bucket
 		String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename).toUriString();
 		
-	
 		Post post = new Post();
 		post.setImageRef(filename);
 		post.setUserId(userid);
 		post.setCreationDate(new Date());
 		
 		postService.createPost(post);
-
 		
 		return post;
 		
+	}
+	
+	@RequestMapping(value = "/posts/all", method = RequestMethod.GET)
+	public List getAllPosts()
+	{
+		return postService.getAllPosts();
+		
+	}
+	
+	@RequestMapping(value = "/posts/{userid:.+}", method = RequestMethod.GET)
+	public List download(@PathVariable int userid, HttpServletRequest request) {
+		return postService.getPostByUser(userid);
+		
+	}
+	
+	
+	
+	@RequestMapping(value = "/like", method = RequestMethod.POST)
+	public void likePost(@RequestParam("postId") int postId, @RequestParam("userId") int userId ) {
 		
 	}
 	

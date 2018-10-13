@@ -2,11 +2,14 @@ package com.piccy.demo.service;
  
 
 
+import java.util.List;
+
 import javax.persistence.EntityManagerFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.piccy.demo.domain.Like;
 import com.piccy.demo.domain.Post;
 import com.piccy.demo.dao.PostDao;
 
@@ -33,8 +36,27 @@ public class PostService {
 		postDao.createPost(post);
 	}
 	
+	public List getAllPosts() {
+		return postDao.getAllPost();
+	}
 	
-	public void getPost(int id) {
+	
+	public List getPostByUser(int userid) {
+		return postDao.getPostsByUser(userid);
+	}
+	
+	
+	/*
+	 * submits a like, should check if the user has liked post before
+	 * */
+	public void likePost(Like like) {
+		
+	}
+	
+	/*
+	 * should return all the likes for a given post
+	 */
+	public void getLikes(Post post) {
 		
 	}
 	
