@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.piccy.demo.service.DeleteResponse;
 import com.piccy.demo.service.FileResponse;
 import com.piccy.demo.service.FileStorageService;
 
@@ -58,7 +59,9 @@ public class PostController {
 
 		
 	
-	@RequestMapping(value = "/create-post", method = RequestMethod.POST)
+	
+	
+	@RequestMapping(value = "/posts/create", method = RequestMethod.POST)
 	public Post createPost(@RequestParam("userid") int userid, @RequestParam("file") MultipartFile file) {
 		
 		String filename = fileStorageService.storeFile(file);
@@ -83,17 +86,25 @@ public class PostController {
 		
 	}
 	
+	
 	@RequestMapping(value = "/posts/{userid:.+}", method = RequestMethod.GET)
-	public List download(@PathVariable int userid, HttpServletRequest request) {
+	public List getPost(@PathVariable int userid, HttpServletRequest request) {
 		return postService.getPostByUser(userid);
-		
 	}
+	
+	@RequestMapping(value="/posts/delete/{postid:.+}", method=RequestMethod.POST)
+	public DeleteResponse deletePost(@PathVariable int postid, HttpServletRequest request) {
+		//TODO: needs to also delete file
+		return postService.deletePost(postid);
+	}
+	
+	
 	
 	
 	
 	@RequestMapping(value = "/like", method = RequestMethod.POST)
 	public void likePost(@RequestParam("postId") int postId, @RequestParam("userId") int userId ) {
-		
+		//TODO fill out body
 	}
 	
 	

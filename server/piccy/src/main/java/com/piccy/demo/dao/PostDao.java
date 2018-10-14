@@ -1,5 +1,7 @@
 package com.piccy.demo.dao;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Repository;
 
 
 import com.piccy.demo.domain.Post;
+import com.piccy.demo.service.DeleteResponse;
 
 
 @Repository(value = "postDao")
@@ -39,10 +42,9 @@ public class PostDao {
 	
 
 	
-	Transaction tx = null;
 
-	//create and save post to db
 	public void createPost(Post post) {
+		Transaction tx = null;
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 		try {
 			tx = session.beginTransaction();
@@ -53,15 +55,18 @@ public class PostDao {
 			System.out.println(ex.getStackTrace().toString());
 		}
 		finally {
-		
+			session.close();
 		}
 
 	}
 	
 	public List getAllPost() {
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
-		return session.createCriteria(Post.class).list();
+		List results = session.createCriteria(Post.class).list();
+		session.close();
+		return results;
 	}
+	
 	
 	public List getPostsByUser(int userid) {
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
@@ -71,7 +76,31 @@ public class PostDao {
 		c.where(entityManagerFactory.getCriteriaBuilder().equal(from.get("userId"),1));
 		
 		return entityManager.createQuery(c).getResultList(); 
-		
+	}
+	
+	
+	
+	public DeleteResponse deletePost(int postid) {	
+
+		Post post = entityManager.find(Post.class, postid);
+
+		try {
+				
+			int userid = post.getUserId();
+			entityManager.remove(post);
+			flushAndClear();
+			return new DeleteResponse(postid, userid, "Success");
+
+		}
+		catch (Exception ex){
+			return new DeleteResponse(postid, -1, "post doesnt exist");
+		}
+
+	}
+	
+	private void flushAndClear() {
+	    entityManager.flush();
+	    entityManager.clear();
 	}
 	
 

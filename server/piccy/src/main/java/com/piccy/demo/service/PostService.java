@@ -45,6 +45,10 @@ public class PostService {
 		return postDao.getPostsByUser(userid);
 	}
 	
+	public DeleteResponse deletePost(int postid) {
+		return postDao.deletePost(postid);
+	}
+	
 	
 	/*
 	 * submits a like, should check if the user has liked post before
