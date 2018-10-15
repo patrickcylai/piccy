@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -38,7 +39,7 @@ const styles = theme => ({
 
 class NavBar extends Component {
   render() {
-    const { classes, displaySearchBar } = this.props;
+    const { classes, displaySearchBar, displayProfile } = this.props;
 
     return (
       <div className={classes.root}>
@@ -54,9 +55,25 @@ class NavBar extends Component {
             <div className={classes.searchBarContainer}>
               <SearchBar displaySearchBar={displaySearchBar} />
             </div>
-            <Button color="inherit" className={classes.button}>
-              Profile
-            </Button>
+            {displayProfile ? (
+              <Button
+                color="inherit"
+                className={classes.button}
+                component={Link}
+                to="/"
+              >
+                Home
+              </Button>
+            ) : (
+              <Button
+                color="inherit"
+                className={classes.button}
+                component={Link}
+                to="/profile"
+              >
+                Profile
+              </Button>
+            )}
             <Button color="inherit" className={classes.button}>
               Log Out
             </Button>
@@ -69,7 +86,8 @@ class NavBar extends Component {
 
 NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  displaySearchBar: PropTypes.bool
+  displaySearchBar: PropTypes.bool,
+  displayProfile: PropTypes.bool
 };
 
 export default withStyles(styles)(NavBar);
