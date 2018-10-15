@@ -14,7 +14,13 @@ class ProfilePage extends Component {
     return (
       <div>
         <NavBar />
-        <Profile />
+        <Profile
+          username="stewiebae"
+          firstName="Stewie"
+          lastName="Griffin"
+          email="stewiegriffin@piccy.com"
+          password="********"
+        />
       </div>
     );
   }
