@@ -42,17 +42,23 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: this.props.username
+      username: this.props.username,
+      password: this.props.password
     };
   }
-  handleSave = (username: PropTypes.string) => {
+  handleSaveUsername = (username: PropTypes.string) => {
     this.setState({
       username
     });
   };
+  handleSavePassword = (password: PropTypes.string) => {
+    this.setState({
+      password
+    });
+  };
   render() {
-    const { classes, firstName, lastName, email, password } = this.props;
-    const { username } = this.state;
+    const { classes, firstName, lastName, email } = this.props;
+    const { username, password } = this.state;
     return (
       <div>
         <div className={classes.headRow}>
@@ -75,7 +81,7 @@ class Profile extends Component {
               <EditableInput
                 name="username"
                 value={username}
-                onSave={this.handleSave}
+                onSave={this.handleSaveUsername}
                 className={classes.styledLabel}
               />
             </div>
@@ -84,6 +90,7 @@ class Profile extends Component {
               <EditableInput
                 name="password"
                 value={password}
+                onSave={this.handleSavePassword}
                 className={classes.styledLabel}
               />
             </div>
