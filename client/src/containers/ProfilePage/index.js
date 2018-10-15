@@ -13,7 +13,7 @@ class ProfilePage extends Component {
 
     return (
       <div>
-        <NavBar />
+        <NavBar displayProfile />
         <Profile
           username="stewiebae"
           firstName="Stewie"
