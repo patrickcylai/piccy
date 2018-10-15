@@ -65,10 +65,10 @@ class LoginPage extends Component {
         <Fade in={true} timeout={3000}>
           <div className={classes.titleContainer}>
             <img className={classes.logo} src={logo} alt="logo" />
-            <Typography color="inherit" variant="display2">
+            <Typography color="inherit" variant="h2">
               Welcome to Piccy.
             </Typography>
-            <Typography color="inherit" variant="subheading" gutterBottom>
+            <Typography color="inherit" variant="subtitle1" gutterBottom>
               image sharing for everyone
             </Typography>
             <form
@@ -93,7 +93,7 @@ class LoginPage extends Component {
               <Button type="submit">Login</Button>
             </form>
             <br />
-            <Typography color="inherit" variant="body1">
+            <Typography color="inherit" variant="subtitle2">
               or
             </Typography>
             <br />
