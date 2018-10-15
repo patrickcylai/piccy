@@ -7,6 +7,7 @@ import './App.css';
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
 import ProfilePage from '../ProfilePage';
+import SignUpPage from '../SignUpPage';
 
 class App extends Component {
   render() {
@@ -17,6 +18,7 @@ class App extends Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/profile" component={ProfilePage} />
+          <Route path="/signup" component={SignUpPage} />
         </Switch>
       </React.Fragment>
     );

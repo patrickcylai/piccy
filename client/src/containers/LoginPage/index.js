@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Fade from '@material-ui/core/Fade';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 import logo from '../../images/logo.svg';
 
@@ -25,10 +28,35 @@ const styles = theme => ({
     height: '230px',
     marginBottom: '30px',
     filter: 'invert(100%)'
+  },
+  formContainer: {
+    display: 'flex',
+    flexDirection: 'column'
   }
 });
 
 class LoginPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: ''
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleSubmit() {
+    alert(
+      'username: ' + this.state.username + ', password: ' + this.state.password
+    );
+  }
+
+  handleChange(event) {
+    this.setState({ [event.target.id]: event.target.value });
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -43,6 +71,35 @@ class LoginPage extends Component {
             <Typography color="inherit" variant="subheading" gutterBottom>
               image sharing for everyone
             </Typography>
+            <form
+              className={classes.formContainer}
+              onSubmit={this.handleSubmit}
+            >
+              <TextField
+                id="username"
+                value={this.state.username}
+                onChange={this.handleChange}
+                label="Username"
+                type="email"
+              />
+              <TextField
+                id="password"
+                value={this.state.password}
+                onChange={this.handleChange}
+                label="Password"
+                type="password"
+              />
+              <br />
+              <Button type="submit">Login</Button>
+            </form>
+            <br />
+            <Typography color="inherit" variant="body1">
+              or
+            </Typography>
+            <br />
+            <Button component={Link} to="/signup">
+              Sign Up
+            </Button>
           </div>
         </Fade>
       </div>
