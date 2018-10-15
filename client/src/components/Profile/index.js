@@ -11,33 +11,48 @@ const styles = {
   headRow: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: '80px'
+    marginTop: '130px'
   },
   contentRow: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
     marginTop: '20px'
   },
-  styledparagraph: {
+  styledLabel: {
+    display: 'inline-block'
+  },
+  styledTag: {
+    display: 'inline-block',
+    paddingRight: '10px'
+  },
+  styledEmailTag: {
+    marginLeft: '31px',
+    paddingRight: '10px',
     display: 'inline-block'
   },
   styledEmail: {
-    marginLeft: '32px'
+    display: 'inline-block'
   },
   headerContent: {
     marginLeft: '10px'
   }
 };
 class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: this.props.username
+    };
+  }
+  handleSave = (username: PropTypes.string) => {
+    this.setState({
+      username
+    });
+  };
   render() {
-    const {
-      classes,
-      username,
-      firstName,
-      lastName,
-      email,
-      password
-    } = this.props;
+    const { classes, firstName, lastName, email, password } = this.props;
+    const { username } = this.state;
     return (
       <div>
         <div className={classes.headRow}>
@@ -51,11 +66,27 @@ class Profile extends Component {
         </div>
         <div className={classes.contentRow}>
           <div>
-            <p className={classes.styledEmail}>email: {email}</p>
-            <p>username:</p>
-            <EditableInput name="username" value={username} />
-            <p>password:</p>
-            <EditableInput name="password" value={password} />
+            <div>
+              <p className={classes.styledEmailTag}>email:</p>
+              <div className={classes.styledEmail}> {email}</div>
+            </div>
+            <div>
+              <p className={classes.styledTag}> {'username:'}</p>
+              <EditableInput
+                name="username"
+                value={username}
+                onSave={this.handleSave}
+                className={classes.styledLabel}
+              />
+            </div>
+            <div>
+              <p className={classes.styledTag}> {'password:'} </p>
+              <EditableInput
+                name="password"
+                value={password}
+                className={classes.styledLabel}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +95,7 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   username: PropTypes.string,
   firstName: PropTypes.string,
   lastName: PropTypes.string,

@@ -32,8 +32,11 @@ class EditableInput extends Component {
   };
 
   handleSave = () => {
+    const { onSave } = this.props;
     const { userInput, isEditing } = this.state;
-
+    if (onSave) {
+      onSave(userInput);
+    }
     this.setState({
       userInput: userInput,
       isEditing: false
@@ -86,17 +89,15 @@ class EditableInput extends Component {
     const { value, onCancel, classes } = this.props;
     const { isEditing, userInput } = this.state;
     return isEditing ? (
-      <div>
-        <Input
-          className={classes.styledInput}
-          value={userInput}
-          innerRef={this.setInputRef}
-          onBlur={this.handleBlur}
-          onKeyDown={this.handleKeyDown}
-          onChange={this.handleChange}
-          onCancel={this.handleCancel}
-        />
-      </div>
+      <Input
+        className={classes.styledInput}
+        value={userInput}
+        innerRef={this.setInputRef}
+        onBlur={this.handleBlur}
+        onKeyDown={this.handleKeyDown}
+        onChange={this.handleChange}
+        onCancel={this.handleCancel}
+      />
     ) : (
       <Label content={userInput} onClick={this.handleClickLabel} />
     );
@@ -105,7 +106,8 @@ class EditableInput extends Component {
 
 Input.propTypes = {
   classes: PropTypes.object.isRequired,
-  value: PropTypes.string
+  value: PropTypes.string,
+  onSave: PropTypes.func
 };
 
 export default withStyles(styles)(EditableInput);
