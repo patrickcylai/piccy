@@ -7,8 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
- 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,9 @@ public class FileStorageService {
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
 	
 	
-	private final Path rootStorage;;
+	private final Path rootStorage;
+	
+	private final String fileExt = ".png";
 	
 	
 	
@@ -40,7 +42,9 @@ public class FileStorageService {
 	public String storeFile(MultipartFile file) {
 		
 		String filename = StringUtils.cleanPath(file.getOriginalFilename());	
-		try {
+		filename = UUID.randomUUID().toString() + fileExt;
+		
+		try  {
 			
 			Path storeLocation = this.rootStorage.resolve(filename);
 			Files.copy(file.getInputStream(), storeLocation, StandardCopyOption.REPLACE_EXISTING);
@@ -88,14 +92,7 @@ public class FileStorageService {
     //
 	@Autowired
     public FileStorageService(FileStorageProperties fileStorageProperties) {
-        /*this.rootStorage = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
 
-        try {
-            Files.createDirectories(this.rootStorage);
-        } catch (Exception ex) {
-            throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
-        }*/
 		
 		this.rootStorage = Paths.get("./uploads").toAbsolutePath().normalize();
 		 try {
