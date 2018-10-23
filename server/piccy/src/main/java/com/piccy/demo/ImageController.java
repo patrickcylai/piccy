@@ -47,13 +47,6 @@ public class ImageController {
 	private final AtomicLong counter = new AtomicLong();
 
 
-	@RequestMapping(value = "/images", method = RequestMethod.GET)
-	public ResponseEntity upload(HttpServletRequest request) {
-		return ResponseEntity.ok().body("hello world");
-	}
-			
-	
-
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public FileResponse upload(@RequestParam("userid") String userid, @RequestParam("file") MultipartFile file) {
 		String filename = fileStorageService.storeFile(file);

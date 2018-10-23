@@ -15,13 +15,13 @@ import com.piccy.demo.service.*;
 import com.piccy.demo.service.FileStorageProperties;
 
 
-@SpringBootApplication
+// @SpringBootApplication
 @EnableTransactionManagement
 @EnableConfigurationProperties({
     FileStorageProperties.class
 })
 
-
+@SpringBootApplication
 public class PiccyApplication {
 	
 
