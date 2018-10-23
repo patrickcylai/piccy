@@ -27,12 +27,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.piccy.demo.service.DeleteResponse;
-import com.piccy.demo.service.FileResponse;
 import com.piccy.demo.service.FileStorageService;
 
 import com.piccy.demo.service.PostService;
 import com.piccy.demo.domain.Post;
+import com.piccy.demo.domain.Rating;
+import com.piccy.demo.responses.DeleteResponse;
+import com.piccy.demo.responses.FileResponse;
+import com.piccy.demo.responses.RatingResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -61,7 +63,7 @@ public class PostController {
 	
 	
 	
-	@RequestMapping(value = "/posts/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/post/create", method = RequestMethod.POST)
 	public Post createPost(@RequestParam("userid") int userid, @RequestParam("file") MultipartFile file) {
 		
 		String filename = fileStorageService.storeFile(file);
@@ -85,14 +87,22 @@ public class PostController {
 		return postService.getAllPosts();
 		
 	}
+
 	
-	
-	@RequestMapping(value = "/posts/{userid:.+}", method = RequestMethod.GET)
-	public List getPost(@PathVariable int userid, HttpServletRequest request) {
+	/*for getting by user id*/
+	@RequestMapping(value = "/posts/", method = RequestMethod.GET)
+	public List getPost(@RequestParam("userid") int userid) {
 		return postService.getPostByUser(userid);
 	}
 	
-	@RequestMapping(value="/posts/delete/{postid:.+}", method=RequestMethod.POST)
+	/*for getting indivifual post*/
+	@RequestMapping(value = "/post/{postid:.+}", method = RequestMethod.GET)
+	public Post getPostSingle(@PathVariable int postid) {	
+		return postService.getPostByID(postid);
+	}
+	
+	
+	@RequestMapping(value="/post/{postid:.+}/delete", method=RequestMethod.POST)
 	public DeleteResponse deletePost(@PathVariable int postid, HttpServletRequest request) {
 		//TODO: needs to also delete file
 		return postService.deletePost(postid);
@@ -102,10 +112,34 @@ public class PostController {
 	
 	
 	
-	@RequestMapping(value = "/like", method = RequestMethod.POST)
-	public void likePost(@RequestParam("postId") int postId, @RequestParam("userId") int userId ) {
-		//TODO fill out body
+	@RequestMapping(value = "post/{postid:.+}/rate", method = RequestMethod.POST)
+	public Rating likePost(@PathVariable("postid") int postid, @RequestParam("userid") int userid, @RequestParam("isLike") boolean isLike ) {
+		
+		Rating rating = postService.ratePost(postid, userid, isLike);
+		//if there is no post, return no post
+		if (rating == null) {
+			Rating nullRating = new Rating();
+			nullRating.setUserId(-1);
+			return nullRating;
+	
+		}
+		return rating;
 	}
+	
+	
+	@RequestMapping(value = "post/{postid:.+}/allratings", method = RequestMethod.GET)
+	public RatingResponse getRatins(@PathVariable("postid") int postid) {
+		
+		RatingResponse ratings = postService.getLikes(postid);
+		//if there is no post, return no post
+		if (ratings == null) {
+			return new RatingResponse(-1);
+	
+		}
+		return ratings;
+		
+	}
+	
 	
 	
 	
