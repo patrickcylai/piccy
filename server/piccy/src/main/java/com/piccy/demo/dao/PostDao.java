@@ -27,6 +27,7 @@ import org.springframework.stereotype.Repository;
 import com.piccy.demo.domain.Post;
 import com.piccy.demo.domain.Rating;
 import com.piccy.demo.responses.DeleteResponse;
+import com.piccy.demo.responses.RatingResponse;
 
 
 @Repository(value = "postDao")
@@ -103,7 +104,6 @@ public class PostDao {
 	public Rating getRating(Post post, int userid) {
 		try {
 			
-		
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 		CriteriaQuery<Rating> c = entityManagerFactory.getCriteriaBuilder().createQuery(Rating.class);
 		Root<Rating> from = c.from(Rating.class);
@@ -149,6 +149,47 @@ public class PostDao {
 		finally {
 			session.close();
 		}
+	
+	}
+	
+	
+	public RatingResponse getAllRatings(Post post) {
+		try {
+			
+			
+			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+			CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+			Root<Rating> from = cq.from(Rating.class);
+			cq.select(cb.count(from));
+			cq.where(
+					cb.equal(from.get("post"),post),
+					cb.equal(from.get("isLike"), true)
+				);
+			
+			Long likes = entityManager.createQuery(cq).getSingleResult();
+		
+			cq.select(cb.count(from));
+			cq.where(
+					cb.equal(from.get("post"),post),
+					cb.equal(from.get("isLike"), false)
+				);
+			
+			Long dislikes = entityManager.createQuery(cq).getSingleResult();
+			
+			RatingResponse ratingResponse = new RatingResponse(post.getId());
+			ratingResponse.setDislikes(dislikes);
+			ratingResponse.setLikes(likes);
+			
+			return ratingResponse;
+			
+			
+		
+		}
+		catch (NoResultException ex ) {
+			System.out.println(ex.getLocalizedMessage().toString());
+			return null;
+		}
+		
 		
 	}
 	

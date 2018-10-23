@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.piccy.demo.domain.Rating;
 import com.piccy.demo.responses.DeleteResponse;
+import com.piccy.demo.responses.RatingResponse;
 import com.piccy.demo.domain.Post;
 import com.piccy.demo.dao.PostDao;
 
@@ -96,7 +97,17 @@ public class PostService {
 	/*
 	 * should return all the likes for a given post
 	 */
-	public void getLikes(Post post) {
+	public RatingResponse getLikes(int postid) {
+		
+		Rating rating;
+		
+		Post  post = this.getPostByID(postid);
+		if (post == null ) {
+			return null; //returns null if there is no post
+		}
+		
+		return postDao.getAllRatings(post);
+	
 		
 	}
 	
