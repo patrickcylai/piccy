@@ -27,12 +27,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.piccy.demo.service.DeleteResponse;
-import com.piccy.demo.service.FileResponse;
 import com.piccy.demo.service.FileStorageService;
 
 import com.piccy.demo.service.PostService;
 import com.piccy.demo.domain.Post;
+import com.piccy.demo.domain.Rating;
+import com.piccy.demo.responses.DeleteResponse;
+import com.piccy.demo.responses.FileResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -92,7 +93,7 @@ public class PostController {
 		return postService.getPostByUser(userid);
 	}
 	
-	@RequestMapping(value="/posts/delete/{postid:.+}", method=RequestMethod.POST)
+	@RequestMapping(value="/posts/{postid:.+}/delete", method=RequestMethod.POST)
 	public DeleteResponse deletePost(@PathVariable int postid, HttpServletRequest request) {
 		//TODO: needs to also delete file
 		return postService.deletePost(postid);
@@ -102,9 +103,19 @@ public class PostController {
 	
 	
 	
-	@RequestMapping(value = "/like", method = RequestMethod.POST)
-	public void likePost(@RequestParam("postId") int postId, @RequestParam("userId") int userId ) {
-		//TODO fill out body
+	@RequestMapping(value = "posts/{postid:.+}/rating", method = RequestMethod.POST)
+	public Rating likePost(@PathVariable("postid") int postid, @RequestParam("userid") int userid, @RequestParam("isLike") boolean isLike ) {
+		
+		Rating rating = postService.ratePost(postid, userid, isLike);
+		if (rating == null) {
+			Rating nullRating = new Rating();
+			nullRating.setUserId(-1);
+			return nullRating;
+	
+		}
+		
+		return rating;
+
 	}
 	
 	

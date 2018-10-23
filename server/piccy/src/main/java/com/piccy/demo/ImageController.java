@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.piccy.demo.service.FileResponse;
+import com.piccy.demo.responses.FileResponse;
 import com.piccy.demo.service.FileStorageService;
 
 import javax.servlet.http.HttpServletRequest;
