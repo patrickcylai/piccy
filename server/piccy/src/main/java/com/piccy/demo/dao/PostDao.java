@@ -126,6 +126,8 @@ public class PostDao {
 	}
 	
 	
+	
+	
 	public Rating createRating(Post post, Rating rating) {
 		
 		Transaction tx = null;
@@ -137,7 +139,6 @@ public class PostDao {
 			session.update(rating);
 			session.update(post);
 			
-		//	session.save(post);
 			tx.commit();
 			
 			return rating;
@@ -151,6 +152,9 @@ public class PostDao {
 		}
 	
 	}
+	
+	
+	
 	
 	
 	public RatingResponse getAllRatings(Post post) {

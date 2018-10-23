@@ -63,7 +63,7 @@ public class PostController {
 	
 	
 	
-	@RequestMapping(value = "/posts/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/post/create", method = RequestMethod.POST)
 	public Post createPost(@RequestParam("userid") int userid, @RequestParam("file") MultipartFile file) {
 		
 		String filename = fileStorageService.storeFile(file);
@@ -87,16 +87,22 @@ public class PostController {
 		return postService.getAllPosts();
 		
 	}
+
 	
-	
-	
-	@RequestMapping(value = "/posts/{userid:.+}", method = RequestMethod.GET)
-	public List getPost(@PathVariable int userid, HttpServletRequest request) {
+	/*for getting by user id*/
+	@RequestMapping(value = "/posts/", method = RequestMethod.GET)
+	public List getPost(@RequestParam("userid") int userid) {
 		return postService.getPostByUser(userid);
 	}
 	
+	/*for getting indivifual post*/
+	@RequestMapping(value = "/post/{postid:.+}", method = RequestMethod.GET)
+	public Post getPostSingle(@PathVariable int postid) {	
+		return postService.getPostByID(postid);
+	}
 	
-	@RequestMapping(value="/posts/{postid:.+}/delete", method=RequestMethod.POST)
+	
+	@RequestMapping(value="/post/{postid:.+}/delete", method=RequestMethod.POST)
 	public DeleteResponse deletePost(@PathVariable int postid, HttpServletRequest request) {
 		//TODO: needs to also delete file
 		return postService.deletePost(postid);
@@ -106,7 +112,7 @@ public class PostController {
 	
 	
 	
-	@RequestMapping(value = "posts/{postid:.+}/rate", method = RequestMethod.POST)
+	@RequestMapping(value = "post/{postid:.+}/rate", method = RequestMethod.POST)
 	public Rating likePost(@PathVariable("postid") int postid, @RequestParam("userid") int userid, @RequestParam("isLike") boolean isLike ) {
 		
 		Rating rating = postService.ratePost(postid, userid, isLike);
@@ -121,7 +127,7 @@ public class PostController {
 	}
 	
 	
-	@RequestMapping(value = "posts/{postid:.+}/allratings", method = RequestMethod.GET)
+	@RequestMapping(value = "post/{postid:.+}/allratings", method = RequestMethod.GET)
 	public RatingResponse getRatins(@PathVariable("postid") int postid) {
 		
 		RatingResponse ratings = postService.getLikes(postid);
