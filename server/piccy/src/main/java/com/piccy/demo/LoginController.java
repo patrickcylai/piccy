@@ -3,10 +3,9 @@ package com.piccy.demo;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.piccy.demo.domain.Post;
 import com.piccy.demo.domain.User;
 import com.piccy.demo.service.LoginService;
-import com.piccy.demo.service.PostService;
+import com.piccy.demo.Password;
 
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -120,7 +119,14 @@ public class LoginController {
 
 		User user = new User();
 		user.setUsername(username);
-		user.setPassword(password);
+		String saltedHashed;
+		try {
+			saltedHashed = Password.getSaltedHash(password);
+			user.setPassword(saltedHashed);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		user.setEmail(email);
 		
 		loginService.createUser(user);
@@ -165,21 +171,33 @@ public class LoginController {
 			response.setSuccess(false);
 			return response;
 		}
-		if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
-			String signature = "";
-			try {
-				signature = rsaSigning.sign(username);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// TODO: encrypt username?
-			String usercookie = new String(signature + ":" + username);
-			response.setUserCookie(usercookie);
-			response.setSuccess(true);
+		if (!username.equals(user.getUsername())) {
+			response.setSuccess(false);
 			return response;
 		}
-		response.setSuccess(false);
+		boolean check = false;
+		try {
+			check = Password.check(password, user.getPassword());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		if (check == false) {
+			response.setSuccess(false);
+			return response;
+		}
+		String signature = "";
+		try {
+			signature = rsaSigning.sign(username);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			response.setSuccess(false);
+			return response;
+		}
+		// TODO: encrypt username?
+		String usercookie = new String(signature + ":" + username);
+		response.setUserCookie(usercookie);
+		response.setSuccess(true);
 		return response;
 	}
 	
