@@ -87,6 +87,7 @@ public class LoginController {
 		private boolean success;
 		private String username;
 		private int userid;
+		private String error;
 		
 		public boolean getSuccess() {
 			return success;
@@ -104,6 +105,14 @@ public class LoginController {
 			username = newValue;
 		}
 		
+		public String getError() {
+			return error;
+		}
+		
+		public void setError(String newValue) {
+			error = newValue;
+		}
+		
 		public int getUserid() {
 			return userid;
 		}
@@ -117,6 +126,12 @@ public class LoginController {
 	public RegisterReponseJson register(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email) {
 		final RegisterReponseJson response = new RegisterReponseJson();
 
+		if (loginService.usernameExists(username)) {
+			response.setSuccess(false);
+			response.setError("User already exists with that username.");
+			return response;
+		}
+		
 		User user = new User();
 		user.setUsername(username);
 		String saltedHashed;
@@ -126,6 +141,8 @@ public class LoginController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			response.setSuccess(false);
+			response.setError("Unable to hash and salt password.");
 		}
 		user.setEmail(email);
 		
@@ -134,6 +151,7 @@ public class LoginController {
 		response.setSuccess(true);
 		response.setUserid(user.getUserid());
 		response.setUsername(username);
+		response.setError("");
 		return response;
 	}
 	
