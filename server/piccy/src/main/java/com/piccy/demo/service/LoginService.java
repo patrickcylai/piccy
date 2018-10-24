@@ -29,4 +29,8 @@ public class LoginService {
 		return userDao.usernameExists(username);
 	}
 	
+	public boolean useridExists(int userid) {
+		return userDao.useridExists(userid);
+	}
+	
 }
