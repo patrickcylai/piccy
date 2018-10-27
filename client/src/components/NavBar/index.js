@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Router, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -38,6 +38,17 @@ const styles = theme => ({
 });
 
 class NavBar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    this.props.history.push('/login');
+    localStorage.clear();
+  }
+
   render() {
     const { classes, displaySearchBar, displayProfile } = this.props;
 
@@ -74,7 +85,11 @@ class NavBar extends Component {
                 Profile
               </Button>
             )}
-            <Button color="inherit" className={classes.button}>
+            <Button
+              onClick={this.handleLogout}
+              color="inherit"
+              className={classes.button}
+            >
               Log Out
             </Button>
           </Toolbar>
@@ -90,4 +105,4 @@ NavBar.propTypes = {
   displayProfile: PropTypes.bool
 };
 
-export default withStyles(styles)(NavBar);
+export default withRouter(withStyles(styles)(NavBar));

@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,6 +64,7 @@ public class PostController {
 	private FileStorageService fileStorageService;
 	private final AtomicLong counter = new AtomicLong();
 	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/post/create", method = RequestMethod.POST)
 	public Post createPost(@RequestParam("userid") String userid, @RequestParam("file") MultipartFile file) {
 		Post post = new Post();
@@ -87,6 +89,7 @@ public class PostController {
 		
 	}
 	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/posts/all", method = RequestMethod.GET)
 	public List getAllPosts()
 	{
@@ -96,18 +99,20 @@ public class PostController {
 
 	
 	/*for getting by user id*/
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/posts/", method = RequestMethod.GET)
 	public List getPost(@RequestParam("userid") int userid) {
 		return postService.getPostByUser(userid);
 	}
 	
 	/*for getting indivifual post*/
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/post/{postid:.+}", method = RequestMethod.GET)
 	public Post getPostSingle(@PathVariable int postid) {	
 		return postService.getPostByID(postid);
 	}
 	
-	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value="/post/{postid:.+}/delete", method=RequestMethod.POST)
 	public DeleteResponse deletePost(@PathVariable int postid, HttpServletRequest request) {
 		//TODO: needs to also delete file
