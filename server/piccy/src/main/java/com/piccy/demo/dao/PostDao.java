@@ -8,7 +8,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -25,9 +24,7 @@ import org.springframework.stereotype.Repository;
 
 
 import com.piccy.demo.domain.Post;
-import com.piccy.demo.domain.Rating;
-import com.piccy.demo.responses.DeleteResponse;
-import com.piccy.demo.responses.RatingResponse;
+import com.piccy.demo.service.DeleteResponse;
 
 
 @Repository(value = "postDao")
@@ -76,125 +73,9 @@ public class PostDao {
 		CriteriaQuery<Post> c = entityManagerFactory.getCriteriaBuilder().createQuery(Post.class);
 		Root<Post> from = c.from(Post.class);
 		c.select(from);
-		c.where(entityManagerFactory.getCriteriaBuilder().equal(from.get("userId"),userid));
+		c.where(entityManagerFactory.getCriteriaBuilder().equal(from.get("userId"),1));
 		
 		return entityManager.createQuery(c).getResultList(); 
-	}
-	
-	
-	public Post getPost(int postid) {
-		try {
-			
-		
-		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
-		CriteriaQuery<Post> c = entityManagerFactory.getCriteriaBuilder().createQuery(Post.class);
-		Root<Post> from = c.from(Post.class);
-		c.select(from);
-		c.where(entityManagerFactory.getCriteriaBuilder().equal(from.get("id"),postid));
-		
-		return entityManager.createQuery(c).getSingleResult(); 
-		
-		}
-		catch (NoResultException ex ) {
-			return null;
-		}
-	}
-	
-	
-	public Rating getRating(Post post, int userid) {
-		try {
-			
-		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
-		CriteriaQuery<Rating> c = entityManagerFactory.getCriteriaBuilder().createQuery(Rating.class);
-		Root<Rating> from = c.from(Rating.class);
-		c.select(from);
-		CriteriaBuilder cb = entityManagerFactory.getCriteriaBuilder();
-		c.where(
-			cb.equal(from.get("post"),post),
-			cb.equal(from.get("userId"), userid)
-		);
-		
-		
-		return entityManager.createQuery(c).getSingleResult(); 
-		
-		}
-		catch (NoResultException ex ) {
-			System.out.println(ex.getLocalizedMessage().toString());
-			return null;
-		}
-		
-	}
-	
-	
-	
-	
-	public Rating createRating(Post post, Rating rating) {
-		
-		Transaction tx = null;
-		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
-		try {
-			tx = session.beginTransaction();
-			System.out.println(rating.getPost().toString());
-			post.addRating(rating);
-			session.update(rating);
-			session.update(post);
-			
-			tx.commit();
-			
-			return rating;
-		}
-		catch (Exception ex) {
-			System.out.println(ex.getStackTrace().toString());
-			return null;
-		}
-		finally {
-			session.close();
-		}
-	
-	}
-	
-	
-	
-	
-	
-	public RatingResponse getAllRatings(Post post) {
-		try {
-			
-			
-			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-			CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-			Root<Rating> from = cq.from(Rating.class);
-			cq.select(cb.count(from));
-			cq.where(
-					cb.equal(from.get("post"),post),
-					cb.equal(from.get("isLike"), true)
-				);
-			
-			Long likes = entityManager.createQuery(cq).getSingleResult();
-		
-			cq.select(cb.count(from));
-			cq.where(
-					cb.equal(from.get("post"),post),
-					cb.equal(from.get("isLike"), false)
-				);
-			
-			Long dislikes = entityManager.createQuery(cq).getSingleResult();
-			
-			RatingResponse ratingResponse = new RatingResponse(post.getId());
-			ratingResponse.setDislikes(dislikes);
-			ratingResponse.setLikes(likes);
-			
-			return ratingResponse;
-			
-			
-		
-		}
-		catch (NoResultException ex ) {
-			System.out.println(ex.getLocalizedMessage().toString());
-			return null;
-		}
-		
-		
 	}
 	
 	

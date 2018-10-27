@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Input from '@material-ui/core/Input';
@@ -52,8 +51,8 @@ const styles = theme => ({
 
 class SearchBar extends Component {
   render() {
-    const { classes, displaySearchBar } = this.props;
-    return displaySearchBar ? (
+    const { classes } = this.props;
+    return (
       <div>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
@@ -69,12 +68,8 @@ class SearchBar extends Component {
           />
         </div>
       </div>
-    ) : null;
+    );
   }
 }
-
-SearchBar.propTypes = {
-  displaySearchBar: PropTypes.bool
-};
 
 export default withStyles(styles)(SearchBar);

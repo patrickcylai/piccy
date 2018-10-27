@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Router, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -38,19 +37,8 @@ const styles = theme => ({
 });
 
 class NavBar extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleLogout = this.handleLogout.bind(this);
-  }
-
-  handleLogout() {
-    this.props.history.push('/login');
-    localStorage.clear();
-  }
-
   render() {
-    const { classes, displaySearchBar, displayProfile } = this.props;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
@@ -64,32 +52,12 @@ class NavBar extends Component {
               <img alt="logo" src={logo} className={classes.logo} />
             </IconButton>
             <div className={classes.searchBarContainer}>
-              <SearchBar displaySearchBar={displaySearchBar} />
+              <SearchBar />
             </div>
-            {displayProfile ? (
-              <Button
-                color="inherit"
-                className={classes.button}
-                component={Link}
-                to="/"
-              >
-                Home
-              </Button>
-            ) : (
-              <Button
-                color="inherit"
-                className={classes.button}
-                component={Link}
-                to="/profile"
-              >
-                Profile
-              </Button>
-            )}
-            <Button
-              onClick={this.handleLogout}
-              color="inherit"
-              className={classes.button}
-            >
+            <Button color="inherit" className={classes.button}>
+              Profile
+            </Button>
+            <Button color="inherit" className={classes.button}>
               Log Out
             </Button>
           </Toolbar>
@@ -100,9 +68,7 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  displaySearchBar: PropTypes.bool,
-  displayProfile: PropTypes.bool
+  classes: PropTypes.object.isRequired
 };
 
-export default withRouter(withStyles(styles)(NavBar));
+export default withStyles(styles)(NavBar);
