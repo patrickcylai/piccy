@@ -11,16 +11,41 @@ import SignUpPage from '../SignUpPage';
 import UploadPage from '../UploadPage';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    localStorage.setItem('isAuth', false);
+  }
+
   render() {
     return (
       <React.Fragment>
         <CssBaseline />
         <Switch>
-          <Route exact path="/" component={HomePage} />
+          <Route
+            exact
+            path="/"
+            component={
+              localStorage.getItem('isAuth') === 'true' ? HomePage : LoginPage
+            }
+          />
           <Route path="/login" component={LoginPage} />
-          <Route path="/profile" component={ProfilePage} />
+          <Route
+            exact
+            path="/profile"
+            component={
+              localStorage.getItem('isAuth') === 'true'
+                ? ProfilePage
+                : LoginPage
+            }
+          />
           <Route path="/signup" component={SignUpPage} />
-          <Route path="/upload" component={UploadPage} />
+          <Route
+            exact
+            path="/upload"
+            component={
+              localStorage.getItem('isAuth') === 'true' ? UploadPage : LoginPage
+            }
+          />
         </Switch>
       </React.Fragment>
     );

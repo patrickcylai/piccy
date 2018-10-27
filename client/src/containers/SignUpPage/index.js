@@ -5,6 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import { postFormDataApi } from '../../api/api';
+
 const styles = theme => ({
   rootContainer: {
     display: 'flex',
@@ -43,7 +45,27 @@ class SignUpPage extends Component {
   }
 
   handleSubmit() {
-    alert();
+    let validPass = this.validatePassword();
+
+    if (validPass) {
+      let formData = new FormData();
+      formData.append('email', this.state.email);
+      formData.append('password', this.state.password);
+      formData.append('username', this.state.username);
+
+      postFormDataApi(formData, '/register').then(json => {
+        let res = json;
+        if (res.success) {
+          console.log('registration success');
+          alert('You have successfully created your account!');
+          this.props.history.push('/login');
+        } else {
+          alert(res.error);
+        }
+      });
+    } else {
+      alert("Passwords don't match");
+    }
   }
 
   handleChange(event) {
@@ -52,6 +74,9 @@ class SignUpPage extends Component {
 
   validatePassword() {
     if (this.state.password !== this.state.confirmPassword) {
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -61,7 +86,7 @@ class SignUpPage extends Component {
     return (
       <div className={classes.rootContainer}>
         <Typography variant="h2">Sign Up</Typography>
-        <form className={classes.formContainer} onSubmit={this.handleSubmit}>
+        <div className={classes.formContainer}>
           <TextField
             id="email"
             label="Email"
@@ -94,8 +119,10 @@ class SignUpPage extends Component {
             onChange={this.handleChange}
           />
           <br />
-          <Button type="submit">Create your account</Button>
-        </form>
+          <Button type="submit" onClick={this.handleSubmit}>
+            Create your account
+          </Button>
+        </div>
       </div>
     );
   }
