@@ -1,4 +1,4 @@
-package com.piccy.demo.service;
+package com.piccy.demo.responses;
 
 public class DeleteResponse {
 	
