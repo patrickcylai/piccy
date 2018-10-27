@@ -8,6 +8,7 @@ import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
 import ProfilePage from '../ProfilePage';
 import SignUpPage from '../SignUpPage';
+import UploadPage from '../UploadPage';
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
           <Route path="/login" component={LoginPage} />
           <Route path="/profile" component={ProfilePage} />
           <Route path="/signup" component={SignUpPage} />
+          <Route path="/upload" component={UploadPage} />
         </Switch>
       </React.Fragment>
     );
