@@ -41,7 +41,7 @@ class UploadImage extends Component {
           withIcon={false}
           withPreview={true}
           singleImage={true}
-          buttonText="Choose images"
+          buttonText="Choose a piccy"
           onChange={this.handleOnChange}
           imgExtension={['.jpg', '.gif', '.png', '.gif']}
           maxFileSize={5242880}
