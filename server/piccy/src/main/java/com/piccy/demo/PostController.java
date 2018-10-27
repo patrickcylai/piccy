@@ -35,6 +35,7 @@ import com.piccy.demo.domain.Post;
 import com.piccy.demo.domain.Rating;
 import com.piccy.demo.responses.DeleteResponse;
 import com.piccy.demo.responses.FileResponse;
+import com.piccy.demo.responses.PostRatingResponse;
 import com.piccy.demo.responses.RatingResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,9 +70,9 @@ public class PostController {
 
 		System.out.println(loginService.useridExists(Integer.parseInt(userid)));
 		
-		if (!loginService.useridExists(Integer.parseInt(userid))) {
+		/*if (!loginService.useridExists(Integer.parseInt(userid))) {
 			return post;
-		}
+		}*/
 		
 		String filename = fileStorageService.storeFile(file);
 		//TODO: generate filename for storage bucket
@@ -96,15 +97,15 @@ public class PostController {
 
 	
 	/*for getting by user id*/
-	@RequestMapping(value = "/posts/", method = RequestMethod.GET)
+	@RequestMapping(value = "/posts/", method = RequestMethod.POST)
 	public List getPost(@RequestParam("userid") int userid) {
 		return postService.getPostByUser(userid);
 	}
 	
 	/*for getting indivifual post*/
 	@RequestMapping(value = "/post/{postid:.+}", method = RequestMethod.GET)
-	public Post getPostSingle(@PathVariable int postid) {	
-		return postService.getPostByID(postid);
+	public PostRatingResponse getPostSingle(@PathVariable int postid) {	
+		return postService.getPostAndRatingByID(postid);
 	}
 	
 	
