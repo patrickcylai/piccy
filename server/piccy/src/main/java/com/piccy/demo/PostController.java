@@ -30,6 +30,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.piccy.demo.service.FileStorageService;
 
 import com.piccy.demo.service.PostService;
+import com.piccy.demo.service.LoginService;
 import com.piccy.demo.domain.Post;
 import com.piccy.demo.domain.Rating;
 import com.piccy.demo.responses.DeleteResponse;
@@ -56,23 +57,28 @@ public class PostController {
 	private PostService postService;
 	
 	@Autowired
+	private LoginService loginService;
+	
+	@Autowired
 	private FileStorageService fileStorageService;
 	private final AtomicLong counter = new AtomicLong();
-
-		
-	
-	
 	
 	@RequestMapping(value = "/post/create", method = RequestMethod.POST)
-	public Post createPost(@RequestParam("userid") int userid, @RequestParam("file") MultipartFile file) {
+	public Post createPost(@RequestParam("userid") String userid, @RequestParam("file") MultipartFile file) {
+		Post post = new Post();
+
+		System.out.println(loginService.useridExists(Integer.parseInt(userid)));
+		
+		if (!loginService.useridExists(Integer.parseInt(userid))) {
+			return post;
+		}
 		
 		String filename = fileStorageService.storeFile(file);
 		//TODO: generate filename for storage bucket
 		String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename).toUriString();
 		
-		Post post = new Post();
 		post.setImageRef(filename);
-		post.setUserId(userid);
+		post.setUserId(Integer.parseInt(userid));
 		post.setCreationDate(new Date());
 		
 		postService.createPost(post);

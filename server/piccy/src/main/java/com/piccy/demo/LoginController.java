@@ -3,10 +3,9 @@ package com.piccy.demo;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.piccy.demo.domain.Post;
 import com.piccy.demo.domain.User;
 import com.piccy.demo.service.LoginService;
-import com.piccy.demo.service.PostService;
+import com.piccy.demo.Password;
 
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -88,6 +87,7 @@ public class LoginController {
 		private boolean success;
 		private String username;
 		private int userid;
+		private String error;
 		
 		public boolean getSuccess() {
 			return success;
@@ -105,6 +105,14 @@ public class LoginController {
 			username = newValue;
 		}
 		
+		public String getError() {
+			return error;
+		}
+		
+		public void setError(String newValue) {
+			error = newValue;
+		}
+		
 		public int getUserid() {
 			return userid;
 		}
@@ -118,9 +126,24 @@ public class LoginController {
 	public RegisterReponseJson register(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email) {
 		final RegisterReponseJson response = new RegisterReponseJson();
 
+		if (loginService.usernameExists(username)) {
+			response.setSuccess(false);
+			response.setError("User already exists with that username.");
+			return response;
+		}
+		
 		User user = new User();
 		user.setUsername(username);
-		user.setPassword(password);
+		String saltedHashed;
+		try {
+			saltedHashed = Password.getSaltedHash(password);
+			user.setPassword(saltedHashed);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			response.setSuccess(false);
+			response.setError("Unable to hash and salt password.");
+		}
 		user.setEmail(email);
 		
 		loginService.createUser(user);
@@ -128,6 +151,7 @@ public class LoginController {
 		response.setSuccess(true);
 		response.setUserid(user.getUserid());
 		response.setUsername(username);
+		response.setError("");
 		return response;
 	}
 	
@@ -165,21 +189,33 @@ public class LoginController {
 			response.setSuccess(false);
 			return response;
 		}
-		if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
-			String signature = "";
-			try {
-				signature = rsaSigning.sign(username);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// TODO: encrypt username?
-			String usercookie = new String(signature + ":" + username);
-			response.setUserCookie(usercookie);
-			response.setSuccess(true);
+		if (!username.equals(user.getUsername())) {
+			response.setSuccess(false);
 			return response;
 		}
-		response.setSuccess(false);
+		boolean check = false;
+		try {
+			check = Password.check(password, user.getPassword());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		if (check == false) {
+			response.setSuccess(false);
+			return response;
+		}
+		String signature = "";
+		try {
+			signature = rsaSigning.sign(username);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			response.setSuccess(false);
+			return response;
+		}
+		// TODO: encrypt username?
+		String usercookie = new String(signature + ":" + username);
+		response.setUserCookie(usercookie);
+		response.setSuccess(true);
 		return response;
 	}
 	

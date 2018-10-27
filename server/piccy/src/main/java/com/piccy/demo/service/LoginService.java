@@ -25,4 +25,12 @@ public class LoginService {
 		return userDao.getUserByName(username);
 	}
 	
+	public boolean usernameExists(String username) {
+		return userDao.usernameExists(username);
+	}
+	
+	public boolean useridExists(int userid) {
+		return userDao.useridExists(userid);
+	}
+	
 }
