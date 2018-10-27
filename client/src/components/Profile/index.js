@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import className from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit';
 
 import ProfileImage from './ProfileImage';
 import EditableInput from './EditableInput';

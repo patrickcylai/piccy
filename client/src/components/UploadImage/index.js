@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import className from 'classnames';
 import ImageUploader from 'react-images-upload';
 
 import { withStyles } from '@material-ui/core/styles';
-import UploadButton from '../UploadButton';
 
 const styles = {
   container: {
