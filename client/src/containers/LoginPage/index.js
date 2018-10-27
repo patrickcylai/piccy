@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Fade from '@material-ui/core/Fade';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
-
-import { postFormDataApi } from '../../api/api';
 
 import logo from '../../images/logo.svg';
 
@@ -30,48 +25,10 @@ const styles = theme => ({
     height: '230px',
     marginBottom: '30px',
     filter: 'invert(100%)'
-  },
-  formContainer: {
-    display: 'flex',
-    flexDirection: 'column'
   }
 });
 
 class LoginPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: ''
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleSubmit() {
-    let formData = new FormData();
-    formData.append('password', this.state.password);
-    formData.append('username', this.state.username);
-
-    postFormDataApi(formData, '/login').then(json => {
-      let res = json;
-      if (res.success) {
-        console.log('login success');
-        localStorage.setItem('isAuth', true);
-        localStorage.setItem('username', this.state.username);
-        localStorage.setItem('userid', res.userid);
-        this.props.history.push('/');
-      } else {
-        alert(res.error);
-      }
-    });
-  }
-
-  handleChange(event) {
-    this.setState({ [event.target.id]: event.target.value });
-  }
-
   render() {
     const { classes } = this.props;
 
@@ -80,40 +37,12 @@ class LoginPage extends Component {
         <Fade in={true} timeout={3000}>
           <div className={classes.titleContainer}>
             <img className={classes.logo} src={logo} alt="logo" />
-            <Typography color="inherit" variant="h2">
+            <Typography color="inherit" variant="display2">
               Welcome to Piccy.
             </Typography>
-            <Typography color="inherit" variant="subtitle1" gutterBottom>
+            <Typography color="inherit" variant="subheading" gutterBottom>
               image sharing for everyone
             </Typography>
-            <div className={classes.formContainer}>
-              <TextField
-                id="username"
-                value={this.state.username}
-                onChange={this.handleChange}
-                label="Username"
-                type="text"
-              />
-              <TextField
-                id="password"
-                value={this.state.password}
-                onChange={this.handleChange}
-                label="Password"
-                type="password"
-              />
-              <br />
-              <Button type="submit" onClick={this.handleSubmit}>
-                Login
-              </Button>
-            </div>
-            <br />
-            <Typography color="inherit" variant="subtitle2">
-              or
-            </Typography>
-            <br />
-            <Button component={Link} to="/signup">
-              Sign Up
-            </Button>
           </div>
         </Fade>
       </div>

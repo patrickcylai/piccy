@@ -11,17 +11,17 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.piccy.demo.responses.FileStorageProperties;
 import com.piccy.demo.service.*;
+import com.piccy.demo.service.FileStorageProperties;
 
 
-// @SpringBootApplication
+@SpringBootApplication
 @EnableTransactionManagement
 @EnableConfigurationProperties({
     FileStorageProperties.class
 })
 
-@SpringBootApplication
+
 public class PiccyApplication {
 	
 

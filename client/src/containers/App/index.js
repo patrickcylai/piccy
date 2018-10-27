@@ -7,45 +7,16 @@ import './App.css';
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
 import ProfilePage from '../ProfilePage';
-import SignUpPage from '../SignUpPage';
-import UploadPage from '../UploadPage';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    localStorage.setItem('isAuth', false);
-  }
-
   render() {
     return (
       <React.Fragment>
         <CssBaseline />
         <Switch>
-          <Route
-            exact
-            path="/"
-            component={
-              localStorage.getItem('isAuth') === 'true' ? HomePage : LoginPage
-            }
-          />
+          <Route exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />
-          <Route
-            exact
-            path="/profile"
-            component={
-              localStorage.getItem('isAuth') === 'true'
-                ? ProfilePage
-                : LoginPage
-            }
-          />
-          <Route path="/signup" component={SignUpPage} />
-          <Route
-            exact
-            path="/upload"
-            component={
-              localStorage.getItem('isAuth') === 'true' ? UploadPage : LoginPage
-            }
-          />
+          <Route path="/profile" component={ProfilePage} />
         </Switch>
       </React.Fragment>
     );

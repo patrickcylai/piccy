@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.piccy.demo.responses.FileResponse;
+import com.piccy.demo.service.FileResponse;
 import com.piccy.demo.service.FileStorageService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,46 +39,50 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ComponentScan("com.piccy.demo.service.filestorage")
 public class ImageController {
-
+	
 	private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
-
+	
 	@Autowired
 	private FileStorageService fileStorageService;
 	private final AtomicLong counter = new AtomicLong();
+	
+	
 
+		
+	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public FileResponse upload(@RequestParam("userid") String userid, @RequestParam("file") MultipartFile file) {
 		String filename = fileStorageService.storeFile(file);
-		//TODO: generate filename for storage buckets
+		//TODO: generate filename for storage bucket
 		String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename).toUriString();
-
+		
 		return new FileResponse(filename, downloadUri, file.getContentType(), file.getSize());
 	}
-
-
+	
+	
 	@RequestMapping(value = "/images/{filename:.+}", method = RequestMethod.GET)
 	public ResponseEntity<Resource> download(@PathVariable String filename, HttpServletRequest request) {
-
+		
 		Resource resource = fileStorageService.loadFile(filename);
 		String contentType = null;
-
+		
 		try {
 			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
 		}
 		catch (IOException ex) {
 			logger.info("Could not determine file type.");
 		}
-
+		
         if(contentType == null) {
             contentType = "application/octet-stream";
         }
-
+        
         return ResponseEntity.ok()
         		.contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
 	}
-
-
+	
+	
 
 }
