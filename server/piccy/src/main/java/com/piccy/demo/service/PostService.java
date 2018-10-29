@@ -2,6 +2,7 @@ package com.piccy.demo.service;
  
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.piccy.demo.domain.Rating;
 import com.piccy.demo.responses.DeleteResponse;
+import com.piccy.demo.responses.PostRatingResponse;
 import com.piccy.demo.responses.RatingResponse;
 import com.piccy.demo.domain.Post;
 import com.piccy.demo.dao.PostDao;
@@ -39,17 +41,64 @@ public class PostService {
 	}
 	
 	public List getAllPosts() {
-		return postDao.getAllPost();
+		List<Post> allPosts =  postDao.getAllPost();
+
+		List<PostRatingResponse> results = new ArrayList<PostRatingResponse>();
+		for (Post post : allPosts ) {
+			int postid = post.getId();
+			RatingResponse rating = getLikes(postid);	
+			
+			PostRatingResponse current_rating = new PostRatingResponse(post, rating);
+			System.out.println(current_rating);
+			results.add(current_rating);
+		}
+		
+		return results;
 	}
 	
 	
 	public List getPostByUser(int userid) {
-		return postDao.getPostsByUser(userid);
+		
+		List<Post> allPosts =  postDao.getPostsByUser(userid);
+
+		List<PostRatingResponse> results = new ArrayList<PostRatingResponse>();
+		for (Post post : allPosts ) {
+			int postid = post.getId();
+			RatingResponse rating = getLikes(postid);	
+			
+			PostRatingResponse current_rating = new PostRatingResponse(post, rating);
+			System.out.println(current_rating);
+			results.add(current_rating);
+		}
+		
+		return results;
+		
 	}
 	
 	public DeleteResponse deletePost(int postid) {
 		return postDao.deletePost(postid);
 	}
+	
+	public PostRatingResponse getPostAndRatingByID(int postid) {
+		Post post = postDao.getPost(postid);
+		
+		if (post == null) {
+			System.out.println("no post for id of " + postid);
+			
+			return null;
+		}
+
+		RatingResponse rating = getLikes(postid);
+		
+		PostRatingResponse result = new PostRatingResponse(post, rating);
+
+	
+		return result;
+	
+		
+	}
+	
+	
 	
 	public Post getPostByID(int postid) {
 		Post post = postDao.getPost(postid);
@@ -64,7 +113,6 @@ public class PostService {
 		}
 		
 	}
-	
 	
 	
 	
