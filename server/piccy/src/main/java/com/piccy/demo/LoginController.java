@@ -24,6 +24,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -122,6 +123,7 @@ public class LoginController {
 		}
 	}
 	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public RegisterReponseJson register(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email) {
 		final RegisterReponseJson response = new RegisterReponseJson();
@@ -159,9 +161,18 @@ public class LoginController {
 	{
 		private String userCookie;
 		private Boolean success;
+		private int userid;
 		
 		public String getUserCookie() {
 			return userCookie;
+		}
+		
+		public void setUserid(int userid) {
+			this.userid = userid;
+		}
+		
+		public int getUserid() {
+			return userid;
 		}
 		
 		public void setUserCookie(final String newValue) {
@@ -180,6 +191,7 @@ public class LoginController {
 	// Returns a JSOON response indicating the success of the request and, if successful, the cookie
 	// for the now logged in user. The cookie is currently in the form <signature>:<username> where
 	// the signature is a base64 encoded signature on the users plaintext.
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public LoginResponseJson login(@RequestParam("username") String username, @RequestParam("password") String password) {
 		final LoginResponseJson response = new LoginResponseJson();
@@ -215,6 +227,7 @@ public class LoginController {
 		// TODO: encrypt username?
 		String usercookie = new String(signature + ":" + username);
 		response.setUserCookie(usercookie);
+		response.setUserid(user.getUserid());
 		response.setSuccess(true);
 		return response;
 	}

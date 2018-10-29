@@ -7,6 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
+import { postFormDataApi } from '../../api/api';
+
 import logo from '../../images/logo.svg';
 
 const styles = theme => ({
@@ -48,9 +50,22 @@ class LoginPage extends Component {
   }
 
   handleSubmit() {
-    alert(
-      'username: ' + this.state.username + ', password: ' + this.state.password
-    );
+    let formData = new FormData();
+    formData.append('password', this.state.password);
+    formData.append('username', this.state.username);
+
+    postFormDataApi(formData, '/login').then(json => {
+      let res = json;
+      if (res.success) {
+        console.log('login success');
+        localStorage.setItem('isAuth', true);
+        localStorage.setItem('username', this.state.username);
+        localStorage.setItem('userid', res.userid);
+        this.props.history.push('/');
+      } else {
+        alert(res.error);
+      }
+    });
   }
 
   handleChange(event) {
@@ -71,16 +86,13 @@ class LoginPage extends Component {
             <Typography color="inherit" variant="subtitle1" gutterBottom>
               image sharing for everyone
             </Typography>
-            <form
-              className={classes.formContainer}
-              onSubmit={this.handleSubmit}
-            >
+            <div className={classes.formContainer}>
               <TextField
                 id="username"
                 value={this.state.username}
                 onChange={this.handleChange}
                 label="Username"
-                type="email"
+                type="text"
               />
               <TextField
                 id="password"
@@ -90,8 +102,10 @@ class LoginPage extends Component {
                 type="password"
               />
               <br />
-              <Button type="submit">Login</Button>
-            </form>
+              <Button type="submit" onClick={this.handleSubmit}>
+                Login
+              </Button>
+            </div>
             <br />
             <Typography color="inherit" variant="subtitle2">
               or
