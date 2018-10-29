@@ -55,7 +55,7 @@ class Post extends Component {
               <TrendingDownIcon />
             </IconButton>
             <Typography />
-            <Typography variant="subheading" className={classes.likes}>
+            <Typography variant="subtitle1" className={classes.likes}>
               {this.props.likes}
             </Typography>
             {/* <Typography>{this.props.dislikes}</Typography> */}

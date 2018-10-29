@@ -1,11 +1,9 @@
 @import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 * {
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-}
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif; }
 
 .container-center {
   display: flex;
   justify-content: center;
-  margin-top: 80px;
-}
+  margin-top: 80px; }
