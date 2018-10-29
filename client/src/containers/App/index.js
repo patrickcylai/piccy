@@ -4,6 +4,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import './App.css';
 
+import { postFormDataApi } from '../../api/api';
+
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
 import ProfilePage from '../ProfilePage';
@@ -13,13 +15,33 @@ import UploadPage from '../UploadPage';
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isValid: false
+    };
+
+    this.validAuth = this.validAuth.bind(this);
+  }
+
+  componentDidMount() {
+    this.validAuth();
+  }
+
+  validAuth() {
     if (
-      localStorage.getItem('isAuth') === null ||
-      localStorage.getItem('isAuth') === 'false'
+      localStorage.getItem('userCookie') === null ||
+      localStorage.getItem('userCookie') === undefined
     ) {
       localStorage.clear();
-      localStorage.setItem('isAuth', false);
+      localStorage.setItem('userCookie', '');
     }
+
+    let formData = new FormData();
+    formData.append('usercookie', localStorage.getItem('userCookie'));
+
+    postFormDataApi(formData, '/isvalid').then(json => {
+      localStorage.setItem('isAuth', json.isValid);
+    });
   }
 
   render() {

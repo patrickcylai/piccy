@@ -29,7 +29,6 @@ class PostList extends Component {
   componentDidMount() {
     getApi('/posts/all').then(json => {
       this.setState({ posts: json });
-      console.log(this.state.posts);
       this.setState({ loaded: true });
     });
   }

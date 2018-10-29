@@ -40,7 +40,8 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      likes: 0
+      likes: 0,
+      rated: false
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -48,6 +49,10 @@ class Post extends Component {
   }
 
   handleLike() {
+    if (this.state.rated) {
+      alert('Already rated post');
+      return;
+    }
     let formData = new FormData();
     formData.append('userid', localStorage.getItem('userid'));
     formData.append('isLike', 1);
@@ -56,13 +61,17 @@ class Post extends Component {
       json => {
         if (json !== null && json !== undefined) {
           let newLike = this.state.likes + 1;
-          this.setState({ likes: newLike });
+          this.setState({ likes: newLike, rated: true });
         }
       }
     );
   }
 
   handleDislike() {
+    if (this.state.rated) {
+      alert('Already rated post');
+      return;
+    }
     if (this.state.likes === 0) {
       alert('Cannot Dislike a post with 0 likes');
       return;
@@ -75,7 +84,7 @@ class Post extends Component {
       json => {
         if (json !== null && json !== undefined) {
           let newLike = this.state.likes - 1;
-          this.setState({ likes: newLike });
+          this.setState({ likes: newLike, rated: true });
         }
       }
     );
