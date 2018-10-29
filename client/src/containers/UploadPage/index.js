@@ -8,7 +8,7 @@ class UploadPage extends Component {
   render() {
     return (
       <div>
-        <NavBar displaySearchBar />
+        <NavBar displayProfile />
         <UploadImage />
       </div>
     );

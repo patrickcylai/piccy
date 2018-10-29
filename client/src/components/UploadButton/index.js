@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   button: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 5,
     background: '#3f4257',

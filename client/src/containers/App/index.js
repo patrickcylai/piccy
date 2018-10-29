@@ -13,7 +13,13 @@ import UploadPage from '../UploadPage';
 class App extends Component {
   constructor(props) {
     super(props);
-    localStorage.setItem('isAuth', false);
+    if (
+      localStorage.getItem('isAuth') === null ||
+      localStorage.getItem('isAuth') === 'false'
+    ) {
+      localStorage.clear();
+      localStorage.setItem('isAuth', false);
+    }
   }
 
   render() {
@@ -28,7 +34,12 @@ class App extends Component {
               localStorage.getItem('isAuth') === 'true' ? HomePage : LoginPage
             }
           />
-          <Route path="/login" component={LoginPage} />
+          <Route
+            path="/login"
+            component={
+              localStorage.getItem('isAuth') === 'true' ? HomePage : LoginPage
+            }
+          />
           <Route
             exact
             path="/profile"

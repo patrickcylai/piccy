@@ -10,11 +10,11 @@ class ProfilePage extends Component {
       <div>
         <NavBar displayProfile />
         <Profile
-          username="stewiebae"
-          firstName="Stewie"
-          lastName="Griffin"
-          email="stewiegriffin@piccy.com"
-          password="********"
+          username={localStorage.getItem('username')}
+          // firstName="Stewie"
+          // lastName="Griffin"
+          // email="stewiegriffin@piccy.com"
+          password="*******"
         />
       </div>
     );

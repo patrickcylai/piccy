@@ -101,7 +101,7 @@ public class PostController {
 	
 	/*for getting by user id*/
 
-  @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/posts/", method = RequestMethod.GET)
 	public List getPost(@RequestParam("userid") int userid) {
 		return postService.getPostByUser(userid);
@@ -124,7 +124,7 @@ public class PostController {
 	
 	
 	
-	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "post/{postid:.+}/rate", method = RequestMethod.POST)
 	public Rating likePost(@PathVariable("postid") int postid, @RequestParam("userid") int userid, @RequestParam("isLike") boolean isLike ) {
 		
@@ -139,7 +139,7 @@ public class PostController {
 		return rating;
 	}
 	
-	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "post/{postid:.+}/allratings", method = RequestMethod.GET)
 	public RatingResponse getRatins(@PathVariable("postid") int postid) {
 		

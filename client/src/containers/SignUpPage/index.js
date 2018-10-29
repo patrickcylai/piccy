@@ -56,7 +56,6 @@ class SignUpPage extends Component {
       postFormDataApi(formData, '/register').then(json => {
         let res = json;
         if (res.success) {
-          console.log('registration success');
           alert('You have successfully created your account!');
           this.props.history.push('/login');
         } else {

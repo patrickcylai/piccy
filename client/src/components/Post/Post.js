@@ -12,10 +12,12 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import { IconButton } from '@material-ui/core';
 
+import { postFormDataApi } from '../../api/api';
+
 const styles = theme => ({
   media: {
-    height: 600,
-    width: 600,
+    height: 700,
+    width: 700,
     maxWidth: '100%',
     maxHeight: '100%'
   },
@@ -25,7 +27,7 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   card: {
-    maxWidth: 600,
+    maxWidth: 700,
     margin: theme.spacing.unit * 3
   },
   likes: {
@@ -35,6 +37,54 @@ const styles = theme => ({
 });
 
 class Post extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      likes: 0
+    };
+
+    this.handleLike = this.handleLike.bind(this);
+    this.handleDislike = this.handleDislike.bind(this);
+  }
+
+  handleLike() {
+    let formData = new FormData();
+    formData.append('userid', localStorage.getItem('userid'));
+    formData.append('isLike', 1);
+
+    postFormDataApi(formData, '/post/' + this.props.postId + '/rate').then(
+      json => {
+        if (json !== null && json !== undefined) {
+          let newLike = this.state.likes + 1;
+          this.setState({ likes: newLike });
+        }
+      }
+    );
+  }
+
+  handleDislike() {
+    if (this.state.likes === 0) {
+      alert('Cannot Dislike a post with 0 likes');
+      return;
+    }
+    let formData = new FormData();
+    formData.append('userid', localStorage.getItem('userid'));
+    formData.append('isLike', 0);
+
+    postFormDataApi(formData, '/post/' + this.props.postId + '/rate').then(
+      json => {
+        if (json !== null && json !== undefined) {
+          let newLike = this.state.likes - 1;
+          this.setState({ likes: newLike });
+        }
+      }
+    );
+  }
+
+  componentDidMount() {
+    this.setState({ likes: this.props.likes });
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -48,15 +98,15 @@ class Post extends Component {
             subheader={this.props.postDate}
           />
           <CardActions>
-            <IconButton aria-label="Likes">
+            <IconButton aria-label="Likes" onClick={this.handleLike}>
               <TrendingUpIcon />
             </IconButton>
-            <IconButton aria-label="Dislikes">
+            <IconButton aria-label="Dislikes" onClick={this.handleDislike}>
               <TrendingDownIcon />
             </IconButton>
             <Typography />
             <Typography variant="subtitle1" className={classes.likes}>
-              {this.props.likes}
+              {this.state.likes}
             </Typography>
             {/* <Typography>{this.props.dislikes}</Typography> */}
           </CardActions>
@@ -76,7 +126,8 @@ Post.propTypes = {
   postDate: PropTypes.string,
   image: PropTypes.any,
   content: PropTypes.string,
-  likes: PropTypes.number
+  likes: PropTypes.number,
+  postId: PropTypes.number
   // dislikes: PropTypes.number
 };
 
