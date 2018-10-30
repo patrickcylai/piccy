@@ -57,7 +57,7 @@ class LoginPage extends Component {
     postFormDataApi(formData, '/login').then(json => {
       let res = json;
 
-      if (res.success === undefined || res.success === null) {
+      if (res === undefined || res === null) {
         alert('Connection Error. Please try again later');
         return;
       }

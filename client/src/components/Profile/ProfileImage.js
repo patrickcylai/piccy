@@ -16,17 +16,16 @@ class ProfileImage extends Component {
     const { classes } = this.props;
 
     return (
-      <Avatar
-        alt="Stewie Griffin"
-        src="https://static.vecteezy.com/system/resources/previews/000/071/998/non_2x/vector-stewie-griffin.jpg"
-        className={classNames(classes.bigAvatar)}
-      />
+      <Avatar className={classNames(classes.bigAvatar)}>
+        {this.props.username.substring(0, 1).toUpperCase()}
+      </Avatar>
     );
   }
 }
 
 ProfileImage.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  username: PropTypes.string
 };
 
 export default withStyles(styles)(ProfileImage);
