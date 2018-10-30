@@ -32,7 +32,7 @@ class EditableInput extends Component {
 
   handleSave = () => {
     const { onSave } = this.props;
-    const { userInput, isEditing } = this.state;
+    const { userInput } = this.state;
     if (onSave) {
       onSave(userInput);
     }
@@ -65,7 +65,6 @@ class EditableInput extends Component {
 
   handleCancel = () => {
     const { value } = this.props;
-    const { userInput, isEditing } = this.state;
 
     this.setState({
       isEditing: false,
@@ -85,7 +84,7 @@ class EditableInput extends Component {
   }
 
   render() {
-    const { value, onCancel, classes } = this.props;
+    const { classes } = this.props;
     const { isEditing, userInput } = this.state;
     return isEditing ? (
       <Input

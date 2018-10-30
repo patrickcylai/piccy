@@ -51,8 +51,8 @@ class PostList extends Component {
           <Zoom in={loaded}>
             <div>
               <Post
-                avatar={post.post.userId}
-                user={post.post.userId}
+                avatar={post.user.username.substring(0, 1).toUpperCase()}
+                user={post.user.username}
                 postDate={new Date(post.post.creationDate).toLocaleDateString(
                   'en-AU',
                   {

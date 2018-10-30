@@ -60,7 +60,7 @@ class Profile extends Component {
     return (
       <div>
         <div className={classes.headRow}>
-          <ProfileImage />
+          <ProfileImage username={username} />
           <div className={classes.headerContent}>
             <p>{username}</p>
             <p>
@@ -70,10 +70,10 @@ class Profile extends Component {
         </div>
         <div className={classes.contentRow}>
           <div>
-            <div>
+            {/* <div>
               <p className={classes.styledEmailTag}>email:</p>
               <div className={classes.styledEmail}> {email}</div>
-            </div>
+            </div> */}
             <div>
               <p className={classes.styledTag}> {'username:'}</p>
               <EditableInput

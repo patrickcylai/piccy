@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Router, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -60,6 +60,8 @@ class NavBar extends Component {
               className={classes.logoContainer}
               aria-label="logo"
               disableRipple={true}
+              component={Link}
+              to="/"
             >
               <img alt="logo" src={logo} className={classes.logo} />
             </IconButton>
