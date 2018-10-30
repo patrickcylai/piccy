@@ -117,4 +117,32 @@ public class UserDao {
 		}
 		return null;
 	}
+	
+	
+	
+	public User getUserById(int userid) {
+		Transaction tx = null;
+		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
+		try {
+			tx = session.beginTransaction();
+			
+			CriteriaQuery<User> c = entityManagerFactory.getCriteriaBuilder().createQuery(User.class);
+			Root<User> from = c.from(User.class);
+			c.select(from);
+			c.where(entityManagerFactory.getCriteriaBuilder().equal(from.get("userid"),userid));
+			
+			
+			
+			List<User> users = entityManager.createQuery(c).getResultList();
+			if (users.size() == 0) {
+				return null;
+			}
+			return users.get(0);
+		} catch (Exception ex) {
+			System.out.println(ex.getStackTrace().toString());
+		} finally {
+			session.close();
+		}
+		return null;
+	}
 }

@@ -11,11 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.piccy.demo.domain.Rating;
+import com.piccy.demo.domain.User;
 import com.piccy.demo.responses.DeleteResponse;
 import com.piccy.demo.responses.PostRatingResponse;
 import com.piccy.demo.responses.RatingResponse;
 import com.piccy.demo.domain.Post;
 import com.piccy.demo.dao.PostDao;
+import com.piccy.demo.dao.UserDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,9 @@ public class PostService {
 	@Autowired
 	private PostDao postDao;
 	
+	@Autowired
+	private UserDao userDao;
+	
 	public void createPost(Post post) {
 		postDao.createPost(post);
 	}
@@ -47,8 +52,9 @@ public class PostService {
 		for (Post post : allPosts ) {
 			int postid = post.getId();
 			RatingResponse rating = getLikes(postid);	
-			
-			PostRatingResponse current_rating = new PostRatingResponse(post, rating);
+			User user = userDao.getUserById(post.getUserId());
+		
+			PostRatingResponse current_rating = new PostRatingResponse(post, rating, user);
 			System.out.println(current_rating);
 			results.add(current_rating);
 		}
@@ -66,7 +72,11 @@ public class PostService {
 			int postid = post.getId();
 			RatingResponse rating = getLikes(postid);	
 			
-			PostRatingResponse current_rating = new PostRatingResponse(post, rating);
+			User user = userDao.getUserById(post.getUserId());
+			
+			
+			
+			PostRatingResponse current_rating = new PostRatingResponse(post, rating, user);
 			System.out.println(current_rating);
 			results.add(current_rating);
 		}
@@ -90,7 +100,9 @@ public class PostService {
 
 		RatingResponse rating = getLikes(postid);
 		
-		PostRatingResponse result = new PostRatingResponse(post, rating);
+		User user = userDao.getUserById(post.getUserId());
+		
+		PostRatingResponse result = new PostRatingResponse(post, rating, user);
 
 	
 		return result;
