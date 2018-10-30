@@ -35,6 +35,64 @@ const styles = theme => ({
 });
 
 class Post extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      likes: 0,
+      rated: false
+    };
+
+    this.handleLike = this.handleLike.bind(this);
+    this.handleDislike = this.handleDislike.bind(this);
+  }
+
+  handleLike() {
+    if (this.state.rated) {
+      alert('Already rated post');
+      return;
+    }
+    let formData = new FormData();
+    formData.append('userid', localStorage.getItem('userid'));
+    formData.append('isLike', 1);
+
+    postFormDataApi(formData, '/post/' + this.props.postId + '/rate').then(
+      json => {
+        if (json !== null && json !== undefined) {
+          let newLike = this.state.likes + 1;
+          this.setState({ likes: newLike, rated: true });
+        }
+      }
+    );
+  }
+
+  handleDislike() {
+    if (this.state.rated) {
+      alert('Already rated post');
+      return;
+    }
+    if (this.state.likes === 0) {
+      alert('Cannot Dislike a post with 0 likes');
+      return;
+    }
+    let formData = new FormData();
+    formData.append('userid', localStorage.getItem('userid'));
+    formData.append('isLike', 0);
+
+    postFormDataApi(formData, '/post/' + this.props.postId + '/rate').then(
+      json => {
+        if (json !== null && json !== undefined) {
+          let newLike = this.state.likes - 1;
+          this.setState({ likes: newLike, rated: true });
+        }
+      }
+    );
+  }
+
+  componentDidMount() {
+    this.setState({ likes: this.props.likes });
+  }
+
   render() {
     const { classes } = this.props;
 

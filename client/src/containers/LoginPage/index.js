@@ -56,11 +56,18 @@ class LoginPage extends Component {
 
     postFormDataApi(formData, '/login').then(json => {
       let res = json;
+
+      if (res.success === undefined || res.success === null) {
+        alert('Connection Error. Please try again later');
+        return;
+      }
+
       if (res.success) {
         console.log('login success');
         localStorage.setItem('isAuth', true);
         localStorage.setItem('username', this.state.username);
         localStorage.setItem('userid', res.userid);
+        localStorage.setItem('userCookie', res.userCookie);
         this.props.history.push('/');
       } else {
         alert(res.error);

@@ -257,6 +257,7 @@ public class LoginController {
 	// Returns a JSON response containing an "isvalid" field with a boolean of whether the 
 	// the given cookie is valid and a "username" field specifying the username that the
 	// cookie belongs to.
+    @CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value="/isvalid", method = RequestMethod.POST)
 	public IsValidResponseJson isvalid(@RequestParam("usercookie") String usercookie) {
 		final IsValidResponseJson response = new IsValidResponseJson();

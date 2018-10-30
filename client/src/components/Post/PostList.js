@@ -14,9 +14,28 @@ const styles = theme => ({
 });
 
 class PostList extends Component {
-  state = {
+
+  // form merge
+/*  state = {
     checked: true
-  };
+  };*/
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loaded: false,
+      posts: []
+    };
+  }
+
+  componentDidMount() {
+    getApi('/posts/all').then(json => {
+      this.setState({ posts: json });
+      this.setState({ loaded: true });
+    });
+  }
+
 
   handleChange = () => {
     this.setState(state => ({ checked: !state.checked }));
