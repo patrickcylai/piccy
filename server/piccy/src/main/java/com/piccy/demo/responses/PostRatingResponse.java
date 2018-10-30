@@ -37,6 +37,8 @@ public class PostRatingResponse {
 	
 	public void setUser(User user) {
 		this.user = user;
+		user.setPassword(null);
+	
 	}
 	
 	public User getUser() {
